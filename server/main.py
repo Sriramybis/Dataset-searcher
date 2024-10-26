@@ -112,37 +112,38 @@ async def search():
 class SearchQuery(BaseModel):
     query: str
 
-# FastAPI route for handling search queries
-# @app.post("/search")
-# async def search(query: str):
-#     if not query:
-#         raise HTTPException(status_code=400, detail="Query cannot be empty.")
-    
-#     processed_query = preprocess_query(query)
-#     factors = extract_factors_and_context(processed_query)
-    
-#     top_results = search_datasets(processed_query, df_cleaned, factors)
-    
-#     if top_results.empty:
-#         return {"message": "No results found."}
-
-#     # Convert results to a list of dictionaries
-#     results = top_results.to_dict(orient='records')
-#     return {"results": results}
-
-
-
+FastAPI route for handling search queries
 @app.post("/search")
 async def search(search_query: SearchQuery):
-    # Mock response for demonstration
-    results = [
-        {
-            "Dataset Category": "Example Category",
-            "Vendor": "Example Vendor",
-            "Dataset Name": "Example Dataset",
-            "Description": "Example Description",
-            "Therapeutic coverage": "Example Therapeutic Coverage",
-            "Geographic coverage": "Example Geographic Coverage",
-        }
-    ]
+    query = search_query.query
+    if not query:
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+    
+    processed_query = preprocess_query(query)
+    factors = extract_factors_and_context(processed_query)
+    
+    top_results = search_datasets(processed_query, df_cleaned, factors)
+    
+    if top_results.empty:
+        return {"message": "No results found."}
+
+    # Convert results to a list of dictionaries
+    results = top_results.to_dict(orient='records')
     return {"results": results}
+
+
+
+# @app.post("/search")
+# async def search(search_query: SearchQuery):
+#     # Mock response for demonstration
+#     results = [
+#         {
+#             "Dataset Category": "Example Category",
+#             "Vendor": "Example Vendor",
+#             "Dataset Name": "Example Dataset",
+#             "Description": "Example Description",
+#             "Therapeutic coverage": "Example Therapeutic Coverage",
+#             "Geographic coverage": "Example Geographic Coverage",
+#         }
+#     ]
+#     return {"results": results}
