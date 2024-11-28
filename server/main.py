@@ -112,7 +112,7 @@ async def search():
 class SearchQuery(BaseModel):
     query: str
 
-FastAPI route for handling search queries
+#FastAPI route for handling search queries
 @app.post("/search")
 async def search(search_query: SearchQuery):
     query = search_query.query
